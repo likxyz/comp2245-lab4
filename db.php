@@ -1,5 +1,6 @@
-//serves as a middleman of sorts between mySQL database and PHP application
+
 <?php
+//serves as a middleman of sorts between mySQL database and PHP application
 
 //loads the database
 require __DIR__ . '/config.php';
