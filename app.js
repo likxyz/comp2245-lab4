@@ -31,9 +31,16 @@ fetch('subjects.php')
 const form = document.getElementById('search-form');
 const tableBody = document.querySelector('#results tbody');
 const status = document.getElementById('status');
+//EXERCISE 7
+const searchButton = form.querySelector('button[type="submit"]');
 
 //fetch and display books
 function fetchBooks() {
+    //disable the search button while searching
+    searchButton.disabled = true;
+
+    //show that a search is running
+    status.textContent = 'Searching…';
 
     //get the form data and build the query string
     const params = new URLSearchParams(new FormData(form));
@@ -95,7 +102,16 @@ function fetchBooks() {
         })
         .catch(error => {
             console.error(error);
-        });
+            //clear the table if the search fails
+            tableBody.replaceChildren();
+
+            //display an error message
+            status.textContent = "Couldn't load the books. Please try again.";
+        })
+        .finally(() => {
+        //enable the Search button again
+        searchButton.disabled = false;
+});
 }
 
 //fetch books when the page loads
@@ -106,3 +122,13 @@ form.addEventListener('submit', event => {
     event.preventDefault();
     fetchBooks();
 });
+
+//LINE LISTENERS TO SENSE CHANGE
+//search when the subject changes
+subjectList.addEventListener('change', fetchBooks);
+
+//search when the availability checkbox changes
+const availableCheckbox = document.getElementById('available');
+
+availableCheckbox.addEventListener('change', fetchBooks);
+
